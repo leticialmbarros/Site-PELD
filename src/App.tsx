@@ -246,7 +246,7 @@ const About = () => (
         <div>
           <SectionHeader 
             title="O Projeto" 
-            subtitle="Fortalecendo a comunicação científica e a preservação ambiental no Rio Grande do Sul." 
+            subtitle="Fortalecendo a comunicação científica e a conservação ambiental no Rio Grande do Sul." 
           />
           <div className="space-y-6 text-lg text-stone-600 leading-relaxed">
             <p>
