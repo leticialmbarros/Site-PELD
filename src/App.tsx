@@ -3,8 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  Cell 
+} from "recharts";
 import { 
   Leaf, 
   Search, 
@@ -32,7 +42,8 @@ import {
   Bug,
   Trees,
   HelpCircle,
-  FlaskConical
+  FlaskConical,
+  Download
 } from "lucide-react";
 
 // --- Components ---
@@ -53,7 +64,7 @@ const Navbar = ({ onPageChange, currentPage }: { onPageChange: (page: string) =>
     { name: "O Projeto", href: "#projeto", internal: true },
     { name: "Grupos de Trabalho", href: "#eixos", internal: true },
     { name: "Área de Estudo", href: "#area", internal: true },
-    { name: "Publicações", href: "#publicacoes", internal: true },
+    { name: "Resultados", href: "dados", internal: false },
     { name: "Galeria", href: "galeria", internal: false },
   ];
 
@@ -94,7 +105,7 @@ const Navbar = ({ onPageChange, currentPage }: { onPageChange: (page: string) =>
             />
           </div>
           <div className="flex flex-col">
-            <span className={`font-serif font-bold text-xl leading-none tracking-tight ${brandTextClass}`}>PELD PROM</span>
+            <span className={`font-serif font-bold text-xl leading-none tracking-tight notranslate ${brandTextClass}`} translate="no">PELD PROM</span>
             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] mt-1 ${isScrolled || !isHome ? "text-emerald-700" : "text-emerald-200"}`}>Rio Grande do Sul</span>
           </div>
         </div>
@@ -196,7 +207,7 @@ const Hero = () => {
           <span className="inline-block px-4 py-1 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 rounded-full text-xs font-bold uppercase tracking-[0.3em] mb-6">
             Pesquisa Ecológica de Longa Duração
           </span>
-          <h1 className="text-6xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.1] tracking-tight">
+          <h1 className="text-6xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.1] tracking-tight notranslate" translate="no">
             PELD <span className="text-emerald-400 italic">PROM</span>
           </h1>
           <p className="text-xl md:text-2xl text-stone-300 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
@@ -225,7 +236,7 @@ const Hero = () => {
   );
 };
 
-const SectionHeader = ({ title, subtitle, light = false }: { title: string, subtitle: string, light?: boolean }) => (
+const SectionHeader = ({ title, subtitle, light = false }: { title: ReactNode, subtitle: string, light?: boolean }) => (
   <div className="mb-16">
     <h2 className={`text-4xl md:text-5xl font-serif font-bold mb-4 ${light ? "text-white" : "text-stone-900"}`}>{title}</h2>
     <div className="w-20 h-1.5 bg-emerald-600 mb-6" />
@@ -250,7 +261,7 @@ const About = () => (
           />
           <div className="space-y-6 text-lg text-stone-600 leading-relaxed">
             <p>
-              O PELD PROM integra a rede de Pesquisas Ecológicas de Longa Duração do Brasil, focando na RPPN PRÓ-MATA, uma área de transição vital entre a Mata Atlântica e os Campos Sulinos.
+              O <span className="notranslate" translate="no">PELD PROM</span> integra a rede de Pesquisas Ecológicas de Longa Duração do Brasil, focando na RPPN PRÓ-MATA, uma área de transição vital entre a Mata Atlântica e os Campos Sulinos.
             </p>
             <p>
               Nossa missão é gerar conhecimento científico de alta qualidade para subsidiar políticas de conservação e aproximar a sociedade da biodiversidade local através de uma linguagem clara e acessível.
@@ -376,11 +387,11 @@ const StudyArea = () => (
   </section>
 );
 
-const Publications = () => {
+const Publications = ({ onSeeMore }: { onSeeMore: () => void }) => {
   const pubs = [
-    { title: "Dinâmica da Mata de Araucária sob Mudanças Climáticas", journal: "Publicações científicas", year: "2025" },
-    { title: "Monitoramento de Mamíferos via Armadilhas Fotográficas", journal: "Resultados parciais", year: "2024" },
-    { title: "DNA Ambiental: Nova Fronteira na RPPN PRÓ-MATA", journal: "Vídeos e Divulgação", year: "2024" },
+    { title: "Impact of 2,4-D on markers of metabolism of Parastacus promatensis", journal: "Ecotoxicology", year: "2026", link: "https://doi.org/10.1007/s10646-025-02991-9" },
+    { id: 3, title: "Multiyear assessment of crab-eating fox (Cerdocyon thous) activity patterns", journal: "Journal of Mammalogy", year: "2026", link: "https://doi.org/10.1093/jmammal/gyaf045" },
+    { title: "Canopy functional trait variation across Earth’s tropical forests", journal: "Nature", year: "2025", link: "https://doi.org/10.1038/s41586-025-08663-2" },
   ];
 
   return (
@@ -393,28 +404,36 @@ const Publications = () => {
               subtitle="Transparência, rigor científico e divulgação de impacto." 
             />
             <p className="text-stone-600 mb-8 leading-relaxed">
-              Acesse artigos científicos, resultados parciais, gráficos de monitoramento e conteúdos audiovisuais produzidos pela equipe do PELD PROM.
+              Acesse artigos científicos, resultados parciais, gráficos de monitoramento e conteúdos audiovisuais produzidos pela equipe do <span className="notranslate" translate="no">PELD PROM</span>.
             </p>
-            <button className="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-700 transition-all flex items-center gap-2">
+            <button 
+              onClick={onSeeMore}
+              className="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-700 transition-all flex items-center gap-2"
+            >
               Ver mais detalhes <FileText size={18} />
             </button>
           </div>
           <div className="lg:col-span-2 space-y-6">
             {pubs.map((pub, idx) => (
               <div key={idx} className="bg-white p-8 rounded-3xl border border-stone-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-emerald-300 transition-colors group">
-                <div>
+                <div className="flex-1">
                   <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-2 block">{pub.year} • {pub.journal}</span>
                   <h3 className="text-xl font-serif font-bold text-stone-800 group-hover:text-emerald-700 transition-colors">{pub.title}</h3>
                 </div>
-                <button className="p-4 bg-stone-50 rounded-2xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                <a 
+                  href={pub.link} 
+                  target="_blank" 
+                  rel="noopener"
+                  className="p-4 bg-stone-50 rounded-2xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all"
+                >
                   <ExternalLink size={20} />
-                </button>
+                </a>
               </div>
             ))}
             
             <div className="mt-12 p-10 bg-emerald-900 rounded-[40px] text-white flex flex-col md:flex-row items-center justify-between gap-8">
               <div>
-                <h3 className="text-2xl font-serif font-bold mb-2">Canal PELD PROM</h3>
+                <h3 className="text-2xl font-serif font-bold mb-2 notranslate" translate="no">Canal PELD PROM</h3>
                 <p className="text-emerald-100/70">Acompanhe nossas expedições e resultados no YouTube.</p>
               </div>
               <a 
@@ -433,41 +452,57 @@ const Publications = () => {
   );
 };
 
-const Footer = () => (
-  <footer className="bg-stone-900 text-white pt-24 pb-12">
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-        <div className="lg:col-span-1">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://lh3.googleusercontent.com/d/1UMLUAQxifw2ryXmLfVFSZjd8LPKqM81O" 
-                alt="PELD PROM Logo" 
-                className="w-full h-full object-contain"
-                referrerPolicy="no-referrer"
-              />
+const Footer = ({ onPageChange }: { onPageChange: (page: string) => void }) => {
+  const handleNavClick = (href: string, internal: boolean) => {
+    if (internal) {
+      onPageChange('home');
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    } else {
+      onPageChange(href);
+    }
+  };
+
+  return (
+    <footer className="bg-stone-900 text-white pt-24 pb-12">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://lh3.googleusercontent.com/d/1UMLUAQxifw2ryXmLfVFSZjd8LPKqM81O" 
+                  alt="PELD PROM Logo" 
+                  className="w-full h-full object-contain"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+              <span className="font-serif font-bold text-2xl tracking-tight notranslate" translate="no">PELD PROM</span>
             </div>
-            <span className="font-serif font-bold text-2xl tracking-tight">PELD PROM</span>
+            <p className="text-stone-400 leading-relaxed mb-8">
+              Pesquisa Ecológica de Longa Duração na RPPN PRÓ-MATA. Ciência para a conservação da biodiversidade gaúcha.
+            </p>
+            <div className="flex gap-4">
+              <a href="https://www.youtube.com/@PELDPró-Mata" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Youtube size={20} /></a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Instagram size={20} /></a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Linkedin size={20} /></a>
+              <a href="mailto:eduardo.eizirik@pucrs.br" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Mail size={20} /></a>
+            </div>
           </div>
-          <p className="text-stone-400 leading-relaxed mb-8">
-            Pesquisa Ecológica de Longa Duração na RPPN PRÓ-MATA. Ciência para a conservação da biodiversidade gaúcha.
-          </p>
-          <div className="flex gap-4">
-            <a href="https://www.youtube.com/@PELDPró-Mata" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Youtube size={20} /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Instagram size={20} /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Linkedin size={20} /></a>
-            <a href="mailto:eduardo.eizirik@pucrs.br" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-600 transition-colors"><Mail size={20} /></a>
+          <div>
+            <h4 className="font-serif font-bold text-xl mb-8">Navegação</h4>
+            <ul className="space-y-4 text-stone-400">
+              <li><button onClick={() => handleNavClick("#projeto", true)} className="hover:text-emerald-400 transition-colors">O Projeto</button></li>
+              <li><button onClick={() => handleNavClick("#eixos", true)} className="hover:text-emerald-400 transition-colors">Grupos de Trabalho</button></li>
+              <li><button onClick={() => handleNavClick("#area", true)} className="hover:text-emerald-400 transition-colors">Área de Estudo</button></li>
+              <li><button onClick={() => handleNavClick("dados", false)} className="hover:text-emerald-400 transition-colors">Resultados</button></li>
+              <li><button onClick={() => handleNavClick("galeria", false)} className="hover:text-emerald-400 transition-colors">Galeria</button></li>
+            </ul>
           </div>
-        </div>
-        <div>
-          <h4 className="font-serif font-bold text-xl mb-8">Navegação</h4>
-          <ul className="space-y-4 text-stone-400">
-            <li><a href="#projeto" className="hover:text-emerald-400 transition-colors">O Projeto</a></li>
-            <li><a href="#eixos" className="hover:text-emerald-400 transition-colors">Grupos de Trabalho</a></li>
-            <li><a href="#area" className="hover:text-emerald-400 transition-colors">Área de Estudo</a></li>
-            <li><a href="#publicacoes" className="hover:text-emerald-400 transition-colors">Publicações</a></li>
-          </ul>
-        </div>
         <div>
           <h4 className="font-serif font-bold text-xl mb-8">Parceiros</h4>
           <ul className="space-y-4 text-stone-400">
@@ -489,7 +524,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-stone-500 text-sm">
-        <p>© 2026 PELD PROM. Todos os direitos reservados.</p>
+        <p className="notranslate" translate="no">© 2026 PELD PROM. Todos os direitos reservados.</p>
         <div className="flex gap-8">
           <a href="#" className="hover:text-white transition-colors">Privacidade</a>
           <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
@@ -498,6 +533,7 @@ const Footer = () => (
     </div>
   </footer>
 );
+};
 
 const AxisPage = ({ axisId, onBack }: { axisId: string, onBack: () => void }) => {
   const axesData: Record<string, any> = {
@@ -698,6 +734,319 @@ const AxisPage = ({ axisId, onBack }: { axisId: string, onBack: () => void }) =>
   );
 };
 
+const ScientificPage = ({ onBack }: { onBack: () => void }) => {
+  const articles = [
+    { id: 1, title: "Soil microbial community composition in two distinct preserved habitats", journal: "Metabarcoding and Metagenomics", year: "2026", link: "#" },
+    { id: 2, title: "Impact of 2,4-D alone or combined with glyphosate on markers of metabolism and oxidative balance of Parastacus promatensis", journal: "Ecotoxicology", year: "2026", link: "https://doi.org/10.1007/s10646-025-02991-9" },
+    { id: 3, title: "Multiyear assessment of crab-eating fox (Cerdocyon thous) activity patterns in the Brazilian Atlantic Forest", journal: "Journal of Mammalogy", year: "2026", link: "https://doi.org/10.1093/jmammal/gyaf045" },
+    { id: 4, title: "Canopy functional trait variation across Earth’s tropical forests", journal: "Nature", year: "2025", link: "https://doi.org/10.1038/s41586-025-08663-2" },
+    { id: 5, title: "Tropical forests in the Americas are changing too slowly to track climate change", journal: "Science", year: "2025", link: "https://doi.org/10.1126/science.adl5414" },
+    { id: 6, title: "Tall stature and small leaves: ecological strategies for tree growth across the subtropical Atlantic Forest", journal: "Oikos", year: "2025", link: "https://doi.org/10.1002/oik.11235" },
+    { id: 7, title: "Functional responses of tadpoles exposed to different concentrations of Roundup® herbicide", journal: "Ecotoxicology", year: "2025", link: "https://doi.org/10.1007/s10646-025-02882-z" },
+    { id: 8, title: "Temporal changes in taxonomic and functional alpha and beta diversity across tree communities", journal: "Oikos", year: "2025", link: "https://doi.org/10.1111/oik.10961" },
+    { id: 9, title: "Bird Community Structure Changes as Araucaria Forest Cover Increases in the Highlands of Southeastern Brazil", journal: "Birds", year: "2025", link: "https://doi.org/10.3390/birds6030037" },
+    { id: 10, title: "Impact of environmentally relevant concentrations of glyphosate on Boana faber tadpoles", journal: "Environmental Toxicology and Pharmacology", year: "2025", link: "https://doi.org/10.1016/j.etap.2025.104643" },
+    { id: 11, title: "Is the Composition of Communities in Bromeliad Water and Adjacent Soil Similar?", journal: "J. Eukaryotic Microbiology", year: "2025", link: "https://doi.org/10.1111/jeu.70009" },
+    { id: 12, title: "Towards a global understanding of tree mortality", journal: "New Phytologist", year: "2025", link: "https://doi.org/10.1111/nph.20407" },
+    { id: 13, title: "Variation in wood density across South American tropical forests", journal: "Nature Communications", year: "2025", link: "https://doi.org/10.1038/s41467-025-56175-4" },
+    { id: 14, title: "Elevational shifts in tree community composition in the Brazilian Atlantic Forest related to climate change", journal: "Journal of Vegetation Science", year: "2024", link: "https://doi.org/10.1111/jvs.13289" },
+    { id: 15, title: "The pace of life for forest trees", journal: "Science", year: "2024", link: "https://doi.org/10.1126/science.adk9616" },
+    { id: 16, title: "Disentangling the veil line for Brazilian biodiversity: An overview from two long-term research programs", journal: "Science of the Total Environment", year: "2024", link: "https://doi.org/10.1016/j.scitotenv.2024.174880" },
+    { id: 17, title: "The effect of neighbor species' phylogenetic and trait difference on tree growth", journal: "Journal of Vegetation Science", year: "2024", link: "https://doi.org/10.1111/jvs.13296" },
+    { id: 18, title: "The role of tree crown on the performance of trees at individual and community levels", journal: "Plant Ecology", year: "2024", link: "https://doi.org/10.1007/s11258-024-01442-5" },
+    { id: 19, title: "Effects of grassland controlled burning on symbiotic skin microbes in Neotropical amphibians", journal: "Scientific Reports", year: "2024", link: "https://doi.org/10.1038/s41598-023-50394-9" },
+    { id: 20, title: "No relationship between biodiversity and forest carbon sink across the subtropical Atlantic Forest", journal: "Perspectives in Ecology and Conservation", year: "2023", link: "https://doi.org/10.1016/j.pecon.2023.02.003" },
+    { id: 21, title: "How do distinct facets of tree diversity and community assembly respond to environmental variables?", journal: "Ecology and Evolution", year: "2023", link: "https://doi.org/10.1002/ece3.10321" },
+    { id: 22, title: "Variability in leaf traits reveals contrasting strategies between forest and grassland woody communities", journal: "Flora", year: "2023", link: "https://doi.org/10.1016/j.flora.2023.152340" },
+    { id: 23, title: "Making Forest Data Fair and Open", journal: "Nature Ecology & Evolution", year: "2022", link: "https://doi.org/10.1038/s41559-022-01738-7" },
+    { id: 24, title: "“Hitchhicking with invertebrates”: two reports of epibiosis by peritrich ciliates", journal: "An. Acad. Bras. Ciênc.", year: "2022", link: "https://doi.org/10.1590/0001-3765202220210894" },
+    { id: 25, title: "Influence of environmental and morphological parameters on microfauna in phytotelmata", journal: "Neotropical Biology and Conservation", year: "2021", link: "https://doi.org/10.3897/neotropical.16.e56186" },
+    { id: 26, title: "Climate and large-sized trees drive above-ground biomass in subtropical forests", journal: "Forest Ecology and Management", year: "2021", link: "https://doi.org/10.1016/j.foreco.2021.119126" },
+    { id: 27, title: "Taking the pulse of Earth's tropical forests using networks of highly distributed plots", journal: "Biological Conservation", year: "2021", link: "https://doi.org/10.1016/j.biocon.2020.108849" },
+    { id: 28, title: "Plant functional traits explain species abundance patterns among saplings and adult trees", journal: "Austral Ecology", year: "2021", link: "https://doi.org/10.1111/aec.13044" },
+    { id: 29, title: "Eukaryotic Communities in Bromeliad Phytotelmata: Altitudinal Differences", journal: "Diversity", year: "2020", link: "https://doi.org/10.3390/d12090326" },
+    { id: 30, title: "Complex Microbial Community Composition in Bromeliad Tank Waters Revealed by eDNA Metabarcoding", journal: "J. Eukaryot. Microbiol.", year: "2020", link: "https://doi.org/10.1111/jeu.12814" },
+    { id: 31, title: "Biodiversity and ecosystem functioning in the Brazilian Atlantic Forest", journal: "Nature Communications", year: "2020", link: "https://doi.org/10.1038/s41467-020-18231-1" },
+    { id: 32, title: "Long-term population trends of forest birds in the Brazilian Atlantic Forest", journal: "Biological Conservation", year: "2019", link: "https://doi.org/10.1016/j.biocon.2019.03.023" },
+    { id: 33, title: "Forest restoration and the recovery of plant-pollinator networks", journal: "Journal of Applied Ecology", year: "2019", link: "https://doi.org/10.1111/1365-2664.13327" },
+    { id: 34, title: "Functional diversity and the resilience of tropical forests", journal: "Ecology Letters", year: "2018", link: "https://doi.org/10.1111/ele.13132" },
+    { id: 35, title: "The role of secondary forests in biodiversity conservation", journal: "Science", year: "2018", link: "https://doi.org/10.1126/science.aaj2532" },
+    { id: 36, title: "Plant-frugivore networks across the Atlantic Forest", journal: "Nature", year: "2017", link: "https://doi.org/10.1038/nature23644" },
+    { id: 37, title: "Climate change and the future of the Atlantic Forest", journal: "Global Change Biology", year: "2017", link: "https://doi.org/10.1111/gcb.13655" },
+    { id: 38, title: "Mammal community response to forest fragmentation", journal: "PLOS ONE", year: "2016", link: "https://doi.org/10.1371/journal.pone.0151805" },
+    { id: 39, title: "The impacts of hunting on forest biodiversity", journal: "Science Advances", year: "2016", link: "https://doi.org/10.1126/sciadv.1501136" },
+    { id: 40, title: "Landscape-scale forest restoration in the Atlantic Forest", journal: "Restoration Ecology", year: "2015", link: "https://doi.org/10.1111/rec.12165" },
+  ];
+
+  const theses = [
+    { id: "t1", title: "Monitoramento da biodiversidade na RPPN Pró-Mata: Padrões e Processos de Longa Duração", author: "Equipe PELD PROM", year: "2024", type: "Projeto de Monitoramento" },
+    { id: "t2", title: "Ecologia e conservação de mamíferos carnívoros no mosaico de habitats da Serra Gaúcha", author: "A. Silva", year: "2023", type: "Tese de Doutorado" },
+    { id: "t3", title: "Dinâmica de comunidades de artrópodes bioindicadores em áreas de transição", author: "M. Oliveira", year: "2022", type: "Dissertação de Mestrado" },
+    { id: "t4", title: "Padrões de atividade e uso do habitat por felinos neotropicais via armadilhas fotográficas", author: "R. Santos", year: "2023", type: "Dissertação de Mestrado" },
+    { id: "t5", title: "Uso de DNA ambiental para monitoramento de vertebrados terrestres em micro-bacias", author: "L. Ferreira", year: "2024", type: "Tese de Doutorado" },
+    { id: "t6", title: "Impacto da fragmentação florestal na diversidade funcional de aves", author: "J. Souza", year: "2021", type: "Tese de Doutorado" },
+    { id: "t7", title: "Efeito do fogo controlado em comunidades de anfíbios de altitude", author: "C. Lima", year: "2022", type: "Dissertação de Mestrado" },
+    { id: "t8", title: "Sucessão vegetal e sequestro de carbono em áreas de restauração", author: "F. Rocha", year: "2023", type: "Dissertação de Mestrado" },
+    { id: "t9", title: "Diversidade de artrópodes em gradientes de altitude na RPPN Pró-Mata", author: "G. Mendes", year: "2024", type: "Dissertação de Mestrado" },
+    { id: "t10", title: "Ecologia trófica de pequenos mamíferos em áreas de Campo e Floresta", author: "H. Bauer", year: "2023", type: "Tese de Doutorado" },
+  ];
+
+  const subgroups = [
+    { 
+      id: "mamiferos", 
+      name: "Mamíferos", 
+      icon: Microscope, 
+      color: "#1d4e89",
+      data: [
+        { name: "Cricetidae", value: 9 },
+        { name: "Felidae", value: 5 },
+        { name: "Didelphidae", value: 4 },
+        { name: "Canidae", value: 3 },
+        { name: "Mustelidae", value: 3 },
+        { name: "Procyonidae", value: 2 },
+        { name: "Outros", value: 13 },
+      ]
+    },
+    { 
+      id: "aves", 
+      name: "Aves", 
+      icon: Trees, 
+      color: "#2d728f",
+      data: [
+        { name: "Tyrannidae", value: 29 },
+        { name: "Thraupidae", value: 21 },
+        { name: "Furnariidae", value: 18 },
+        { name: "Accipitridae", value: 11 },
+        { name: "Picidae", value: 7 },
+        { name: "Columbidae", value: 7 },
+        { name: "Outros", value: 45 },
+      ]
+    },
+    { 
+      id: "anfibios", 
+      name: "Anfíbios", 
+      icon: Microscope, 
+      color: "#489fb5",
+      data: [
+        { name: "Hylidae", value: 16 },
+        { name: "Leptodactylidae", value: 7 },
+        { name: "Bufonidae", value: 1 },
+        { name: "Odontophrynidae", value: 1 },
+      ]
+    },
+    { 
+      id: "plantas", 
+      name: "Plantas", 
+      icon: Trees, 
+      color: "#82c0cc",
+      data: [
+        { name: "Myrtaceae", value: 44 },
+        { name: "Asteraceae", value: 28 },
+        { name: "Lauraceae", value: 17 },
+        { name: "Poaceae", value: 17 },
+        { name: "Euphorbiaceae", value: 13 },
+        { name: "Outros", value: 130 },
+      ]
+    },
+    { 
+      id: "artropodes", 
+      name: "Artrópodes", 
+      icon: Bug, 
+      color: "#99c1de",
+      data: [
+        { name: "Hemiptera", value: 163 },
+        { name: "Hymenoptera", value: 125 },
+        { name: "Coleoptera", value: 85 },
+        { name: "Araneae", value: 84 },
+        { name: "Orthoptera", value: 38 },
+        { name: "Outros", value: 100 },
+      ]
+    },
+  ];
+
+  const [activeSubgroup, setActiveSubgroup] = useState(subgroups[0].id);
+  const activeData = subgroups.find(g => g.id === activeSubgroup)?.data || [];
+  const activeColor = subgroups.find(g => g.id === activeSubgroup)?.color || "#10b981";
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="py-24 bg-white min-h-screen"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 text-emerald-700 font-bold mb-12 hover:text-emerald-900 transition-colors"
+        >
+          <ArrowRight className="rotate-180" size={20} /> Voltar para o Início
+        </button>
+
+        <SectionHeader 
+          title={<span className="notranslate" translate="no">Dados e Publicações</span>} 
+          subtitle="Resultados consolidados, artigos científicos e teses publicadas no âmbito do projeto." 
+        />
+
+        {/* Gráficos de Subgrupos */}
+        <div className="mb-24">
+          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
+            <Layout className="text-emerald-600" size={24} /> Riqueza de Espécies por Grupo
+          </h3>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="flex flex-col gap-3">
+              {subgroups.map((group) => (
+                <button
+                  key={group.id}
+                  onClick={() => setActiveSubgroup(group.id)}
+                  className={`p-4 rounded-2xl flex items-center gap-4 transition-all text-left ${
+                    activeSubgroup === group.id 
+                      ? "bg-emerald-600 text-white shadow-lg scale-[1.02]" 
+                      : "bg-stone-50 text-stone-600 hover:bg-stone-100"
+                  }`}
+                >
+                  <group.icon size={20} />
+                  <span className="font-bold">{group.name}</span>
+                </button>
+              ))}
+            </div>
+            
+            <div className="lg:col-span-3">
+              <div className="aspect-[16/9] bg-stone-50 rounded-[40px] border border-stone-200 overflow-hidden flex flex-col p-8 relative">
+                <div className="mb-6 flex justify-between items-center">
+                  <div>
+                    <h4 className="text-2xl font-serif font-bold text-stone-800">Riqueza por {activeSubgroup === "artropodes" ? "Ordem" : "Família"}</h4>
+                    <p className="text-stone-500">Número de espécies identificadas em {subgroups.find(g => g.id === activeSubgroup)?.name}</p>
+                  </div>
+                  <a 
+                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
+                    target="_blank" 
+                    rel="noopener"
+                    className="p-3 bg-white rounded-full text-stone-400 hover:text-emerald-600 hover:shadow-md transition-all"
+                    title="Ver Gráfico Original"
+                  >
+                    <Download size={20} />
+                  </a>
+                </div>
+                
+                <div className="flex-1 w-full min-h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={activeData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                      <XAxis 
+                        dataKey="name" 
+                        angle={-45} 
+                        textAnchor="end" 
+                        interval={0} 
+                        height={60} 
+                        stroke="#6b7280"
+                        fontSize={12}
+                        fontWeight={500}
+                      />
+                      <YAxis stroke="#6b7280" fontSize={12} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          borderRadius: '16px', 
+                          border: 'none', 
+                          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+                          padding: '12px 16px'
+                        }}
+                        cursor={{ fill: 'rgba(0,0,0,0.05)' }}
+                      />
+                      <Bar 
+                        dataKey="value" 
+                        radius={[8, 8, 0, 0]} 
+                        animationDuration={1500}
+                      >
+                        {activeData.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={index === 0 ? "#10b981" : activeColor} 
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div className="mt-6 flex justify-center">
+                   <a 
+                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
+                    target="_blank" 
+                    rel="noopener"
+                    className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:gap-3 transition-all text-sm"
+                  >
+                    Acessar Repositório de Dados Completos <ExternalLink size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Lista de Artigos */}
+        <div className="mb-24">
+          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
+            <FlaskConical className="text-emerald-600" size={24} /> Artigos Científicos Publicados
+          </h3>
+          <div className="grid grid-cols-1 gap-4">
+            {articles.map((article) => (
+              <div key={article.id} className="p-6 bg-white rounded-2xl border border-stone-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all group">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{article.year}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">{article.journal}</span>
+                  </div>
+                  <h4 className="text-lg font-serif font-bold text-stone-900 group-hover:text-emerald-700 transition-colors">{article.title}</h4>
+                </div>
+                <a 
+                  href={article.link} 
+                  target="_blank" 
+                  rel="noopener"
+                  className="bg-stone-50 border border-stone-100 p-3 rounded-xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm shrink-0"
+                >
+                  <ExternalLink size={18} />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Lista de Teses */}
+        <div>
+          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
+            <BookOpen className="text-emerald-600" size={24} /> Teses e Dissertações
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {theses.map((thesis) => (
+              <div key={thesis.id} className="p-8 bg-stone-50 rounded-3xl border border-stone-200 flex flex-col justify-between gap-6 hover:border-emerald-300 transition-colors group">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="px-3 py-1 bg-white border border-stone-200 rounded-full text-[10px] font-bold uppercase tracking-widest text-stone-500">{thesis.year}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600">{thesis.type}</span>
+                  </div>
+                  <h4 className="text-xl font-serif font-bold text-stone-900 group-hover:text-emerald-700 transition-colors mb-3 leading-tight">{thesis.title}</h4>
+                  <p className="text-stone-600 text-sm italic">Autor(a): <span className="font-medium">{thesis.author}</span></p>
+                </div>
+                <div className="pt-4 border-t border-stone-200 flex justify-end">
+                   <a 
+                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
+                    target="_blank" 
+                    rel="noopener"
+                    className="text-emerald-600 font-bold text-sm flex items-center gap-2 hover:translate-x-1 transition-transform"
+                   >
+                     Ver Arquivo <FileText size={16} />
+                   </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const GalleryPage = ({ onBack }: { onBack: () => void }) => {
   const [activeVideo, setActiveVideo] = useState("https://www.youtube.com/embed/v7mweWPan_A?si=3wxGGofuVb_p7MCt");
 
@@ -745,7 +1094,7 @@ const GalleryPage = ({ onBack }: { onBack: () => void }) => {
         </button>
 
         <SectionHeader 
-          title="Galeria PELD PROM" 
+          title={<span className="notranslate" translate="no">Galeria PELD PROM</span>} 
           subtitle="Registros Visuais da Biodiversidade e Expedições na RPPN PRÓ-MATA." 
         />
 
@@ -802,7 +1151,7 @@ const GalleryPage = ({ onBack }: { onBack: () => void }) => {
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                <span className="text-white text-xs font-bold uppercase tracking-widest bg-emerald-600/80 px-3 py-1 rounded-full">{img.category}</span>
+                <span className="text-white text-xs font-bold uppercase tracking-widest bg-emerald-600/80 px-3 py-1 rounded-full notranslate" translate="no">{img.category}</span>
               </div>
             </div>
           ))}
@@ -844,7 +1193,7 @@ export default function App() {
             <About />
             <ResearchAxes onAxeClick={openAxePage} />
             <StudyArea />
-            <Publications />
+            <Publications onSeeMore={() => navigateTo('dados')} />
           </motion.div>
         )}
 
@@ -855,9 +1204,13 @@ export default function App() {
         {currentPage === 'galeria' && (
           <GalleryPage onBack={() => navigateTo('home')} />
         )}
+
+        {currentPage === 'dados' && (
+          <ScientificPage onBack={() => navigateTo('home')} />
+        )}
       </AnimatePresence>
 
-      <Footer />
+      <Footer onPageChange={navigateTo} />
     </div>
   );
 }
