@@ -285,6 +285,37 @@ const About = () => (
                     <p className="text-stone-600 leading-relaxed">Monitoramento a longo prazo da biodiversidade na área e a dinâmica dos processos ecológicos nos ambientes florestais e campestres, convertendo os resultados em produção científica e disseminação do conhecimento.</p>
                   </div>
                 </div>
+
+                <div className="pt-8 border-t border-stone-100">
+                  <h4 className="text-xl font-serif font-bold text-stone-900 mb-6 flex items-center gap-2">
+                    <Users className="text-emerald-600" size={22} /> Comitê Gestor
+                  </h4>
+                  <div className="grid grid-cols-1 gap-4">
+                    {[
+                      { name: "Eduardo Eizirik", role: "Coordenador Geral do Projeto e do Grupo de Vertebrados", lattes: "http://lattes.cnpq.br/3626004211018550" },
+                      { name: "Júlio César Bicca Marques", role: "Vice Coordenador Geral do Projeto", lattes: "http://lattes.cnpq.br/8217693225258734" },
+                      { name: "Augusto Mussi Alvim", role: "Gestor da RPPN Pró-Mata", lattes: "http://lattes.cnpq.br/5389042578042654" },
+                      { name: "Renato Augusto Teixeira", role: "Coordenador do Grupo de Artrópodes", lattes: "http://lattes.cnpq.br/6025887779119918" },
+                      { name: "Laura Pinto Utz", role: "Coordenadora do Grupo de DNA Ambiental", lattes: "http://lattes.cnpq.br/7548654461265795" },
+                      { name: "Pedro Maria de Abreu", role: "Coordenador do Grupo de Plantas", lattes: "http://lattes.cnpq.br/6886522530872727" }
+                    ].map((member, i) => (
+                      <div key={i} className="flex items-center justify-between p-4 bg-stone-50 rounded-2xl hover:bg-emerald-50 transition-colors group">
+                        <div className="flex-1">
+                          <p className="font-bold text-stone-800 group-hover:text-emerald-700 transition-colors">{member.name}</p>
+                          <p className="text-xs text-stone-500 uppercase font-medium tracking-wider">{member.role}</p>
+                        </div>
+                        <a 
+                          href={member.lattes} 
+                          target="_blank" 
+                          rel="noopener" 
+                          className="px-4 py-1.5 bg-white border border-stone-200 rounded-full text-xs font-bold text-stone-400 hover:text-emerald-600 hover:border-emerald-200 transition-all shadow-sm"
+                        >
+                          Lattes
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
           </div>
         </div>
@@ -389,9 +420,24 @@ const StudyArea = () => (
 
 const Publications = ({ onSeeMore }: { onSeeMore: () => void }) => {
   const pubs = [
-    { title: "Impact of 2,4-D on markers of metabolism of Parastacus promatensis", journal: "Ecotoxicology", year: "2026", link: "https://doi.org/10.1007/s10646-025-02991-9" },
-    { id: 3, title: "Multiyear assessment of crab-eating fox (Cerdocyon thous) activity patterns", journal: "Journal of Mammalogy", year: "2026", link: "https://doi.org/10.1093/jmammal/gyaf045" },
-    { title: "Canopy functional trait variation across Earth’s tropical forests", journal: "Nature", year: "2025", link: "https://doi.org/10.1038/s41586-025-08663-2" },
+    { 
+      title: "Impact of 2,4-D alone or combined with glyphosate on markers of metabolism and oxidative balance of Parastacus promatensis", 
+      journal: "Ecotoxicology", 
+      year: "2026", 
+      link: "https://doi.org/10.1007/s10646-025-02991-9" 
+    },
+    { 
+      title: "Multiyear assessment of crab-eating fox (Cerdocyon thous) activity patterns in the Brazilian Atlantic Forest", 
+      journal: "Journal of Mammalogy", 
+      year: "2026", 
+      link: "https://doi.org/10.1093/jmammal/gyaf045" 
+    },
+    { 
+      title: "Soil microbial community composition in two distinct preserved habitats", 
+      journal: "Metabarcoding and Metagenomics", 
+      year: "2026", 
+      link: "#" 
+    },
   ];
 
   return (
@@ -404,16 +450,19 @@ const Publications = ({ onSeeMore }: { onSeeMore: () => void }) => {
               subtitle="Transparência, rigor científico e divulgação de impacto." 
             />
             <p className="text-stone-600 mb-8 leading-relaxed">
-              Acesse artigos científicos, resultados parciais, gráficos de monitoramento e conteúdos audiovisuais produzidos pela equipe do <span className="notranslate" translate="no">PELD PROM</span>.
+              Acesse a lista completa de artigos científicos, resultados parciais e gráficos de monitoramento produzidos pela equipe do <span className="notranslate" translate="no">PELD PROM</span>.
             </p>
             <button 
               onClick={onSeeMore}
-              className="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-700 transition-all flex items-center gap-2"
+              className="hidden lg:flex bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-700 transition-all items-center gap-2"
             >
-              Ver mais detalhes <FileText size={18} />
+              Ver todas as publicações <FileText size={18} />
             </button>
           </div>
           <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-stone-400">Destaques recentes</h4>
+            </div>
             {pubs.map((pub, idx) => (
               <div key={idx} className="bg-white p-8 rounded-3xl border border-stone-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-emerald-300 transition-colors group">
                 <div className="flex-1">
@@ -424,14 +473,23 @@ const Publications = ({ onSeeMore }: { onSeeMore: () => void }) => {
                   href={pub.link} 
                   target="_blank" 
                   rel="noopener"
-                  className="p-4 bg-stone-50 rounded-2xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all"
+                  className="p-4 bg-stone-50 rounded-2xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm"
                 >
                   <ExternalLink size={20} />
                 </a>
               </div>
             ))}
             
-            <div className="mt-12 p-10 bg-emerald-900 rounded-[40px] text-white flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="pt-4 flex justify-center lg:hidden">
+              <button 
+                onClick={onSeeMore}
+                className="w-full bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+              >
+                Ver todas as publicações <FileText size={18} />
+              </button>
+            </div>
+
+            <div className="mt-12 p-8 md:p-10 bg-emerald-900 rounded-[40px] text-white flex flex-col md:flex-row items-center justify-between gap-8">
               <div>
                 <h3 className="text-2xl font-serif font-bold mb-2 notranslate" translate="no">Canal PELD PROM</h3>
                 <p className="text-emerald-100/70">Acompanhe nossas expedições e resultados no YouTube.</p>
@@ -440,7 +498,7 @@ const Publications = ({ onSeeMore }: { onSeeMore: () => void }) => {
                 href="https://www.youtube.com/@PELDPró-Mata" 
                 target="_blank" 
                 rel="noopener"
-                className="bg-emerald-400 text-emerald-950 px-8 py-4 rounded-full font-bold hover:bg-white transition-all flex items-center gap-2"
+                className="w-full md:w-auto bg-emerald-400 text-emerald-950 px-8 py-4 rounded-full font-bold hover:bg-white transition-all flex items-center justify-center gap-2"
               >
                 Acessar Canal <Youtube size={18} />
               </a>
@@ -579,7 +637,7 @@ const AxisPage = ({ axisId, onBack }: { axisId: string, onBack: () => void }) =>
       ],
       coordination: [
         { 
-          subproject: "Amfíbios (Dinâmica da assembleia)", 
+          subproject: "Anfíbios (Dinâmica da assembleia)", 
           name: "Alexandre Marques Tozetti", 
           role: "Coordenador do subprojeto",
           lattes: "http://lattes.cnpq.br/8347588972615049"
@@ -591,7 +649,7 @@ const AxisPage = ({ axisId, onBack }: { axisId: string, onBack: () => void }) =>
           lattes: "http://lattes.cnpq.br/3626004211018550"
         },
         { 
-          subproject: "Amfíbios (Estudo bioquímico-funcional)", 
+          subproject: "Anfíbios (Estudo bioquímico-funcional)", 
           name: "Guendalina Turcato Oliveira", 
           role: "Coordenadora do subprojeto",
           lattes: "http://lattes.cnpq.br/1189036200852586"
@@ -735,61 +793,39 @@ const AxisPage = ({ axisId, onBack }: { axisId: string, onBack: () => void }) =>
 };
 
 const ScientificPage = ({ onBack }: { onBack: () => void }) => {
-  const articles = [
-    { id: 1, title: "Soil microbial community composition in two distinct preserved habitats", journal: "Metabarcoding and Metagenomics", year: "2026", link: "#" },
-    { id: 2, title: "Impact of 2,4-D alone or combined with glyphosate on markers of metabolism and oxidative balance of Parastacus promatensis", journal: "Ecotoxicology", year: "2026", link: "https://doi.org/10.1007/s10646-025-02991-9" },
-    { id: 3, title: "Multiyear assessment of crab-eating fox (Cerdocyon thous) activity patterns in the Brazilian Atlantic Forest", journal: "Journal of Mammalogy", year: "2026", link: "https://doi.org/10.1093/jmammal/gyaf045" },
-    { id: 4, title: "Canopy functional trait variation across Earth’s tropical forests", journal: "Nature", year: "2025", link: "https://doi.org/10.1038/s41586-025-08663-2" },
-    { id: 5, title: "Tropical forests in the Americas are changing too slowly to track climate change", journal: "Science", year: "2025", link: "https://doi.org/10.1126/science.adl5414" },
-    { id: 6, title: "Tall stature and small leaves: ecological strategies for tree growth across the subtropical Atlantic Forest", journal: "Oikos", year: "2025", link: "https://doi.org/10.1002/oik.11235" },
-    { id: 7, title: "Functional responses of tadpoles exposed to different concentrations of Roundup® herbicide", journal: "Ecotoxicology", year: "2025", link: "https://doi.org/10.1007/s10646-025-02882-z" },
-    { id: 8, title: "Temporal changes in taxonomic and functional alpha and beta diversity across tree communities", journal: "Oikos", year: "2025", link: "https://doi.org/10.1111/oik.10961" },
-    { id: 9, title: "Bird Community Structure Changes as Araucaria Forest Cover Increases in the Highlands of Southeastern Brazil", journal: "Birds", year: "2025", link: "https://doi.org/10.3390/birds6030037" },
-    { id: 10, title: "Impact of environmentally relevant concentrations of glyphosate on Boana faber tadpoles", journal: "Environmental Toxicology and Pharmacology", year: "2025", link: "https://doi.org/10.1016/j.etap.2025.104643" },
-    { id: 11, title: "Is the Composition of Communities in Bromeliad Water and Adjacent Soil Similar?", journal: "J. Eukaryotic Microbiology", year: "2025", link: "https://doi.org/10.1111/jeu.70009" },
-    { id: 12, title: "Towards a global understanding of tree mortality", journal: "New Phytologist", year: "2025", link: "https://doi.org/10.1111/nph.20407" },
-    { id: 13, title: "Variation in wood density across South American tropical forests", journal: "Nature Communications", year: "2025", link: "https://doi.org/10.1038/s41467-025-56175-4" },
-    { id: 14, title: "Elevational shifts in tree community composition in the Brazilian Atlantic Forest related to climate change", journal: "Journal of Vegetation Science", year: "2024", link: "https://doi.org/10.1111/jvs.13289" },
-    { id: 15, title: "The pace of life for forest trees", journal: "Science", year: "2024", link: "https://doi.org/10.1126/science.adk9616" },
-    { id: 16, title: "Disentangling the veil line for Brazilian biodiversity: An overview from two long-term research programs", journal: "Science of the Total Environment", year: "2024", link: "https://doi.org/10.1016/j.scitotenv.2024.174880" },
-    { id: 17, title: "The effect of neighbor species' phylogenetic and trait difference on tree growth", journal: "Journal of Vegetation Science", year: "2024", link: "https://doi.org/10.1111/jvs.13296" },
-    { id: 18, title: "The role of tree crown on the performance of trees at individual and community levels", journal: "Plant Ecology", year: "2024", link: "https://doi.org/10.1007/s11258-024-01442-5" },
-    { id: 19, title: "Effects of grassland controlled burning on symbiotic skin microbes in Neotropical amphibians", journal: "Scientific Reports", year: "2024", link: "https://doi.org/10.1038/s41598-023-50394-9" },
-    { id: 20, title: "No relationship between biodiversity and forest carbon sink across the subtropical Atlantic Forest", journal: "Perspectives in Ecology and Conservation", year: "2023", link: "https://doi.org/10.1016/j.pecon.2023.02.003" },
-    { id: 21, title: "How do distinct facets of tree diversity and community assembly respond to environmental variables?", journal: "Ecology and Evolution", year: "2023", link: "https://doi.org/10.1002/ece3.10321" },
-    { id: 22, title: "Variability in leaf traits reveals contrasting strategies between forest and grassland woody communities", journal: "Flora", year: "2023", link: "https://doi.org/10.1016/j.flora.2023.152340" },
-    { id: 23, title: "Making Forest Data Fair and Open", journal: "Nature Ecology & Evolution", year: "2022", link: "https://doi.org/10.1038/s41559-022-01738-7" },
-    { id: 24, title: "“Hitchhicking with invertebrates”: two reports of epibiosis by peritrich ciliates", journal: "An. Acad. Bras. Ciênc.", year: "2022", link: "https://doi.org/10.1590/0001-3765202220210894" },
-    { id: 25, title: "Influence of environmental and morphological parameters on microfauna in phytotelmata", journal: "Neotropical Biology and Conservation", year: "2021", link: "https://doi.org/10.3897/neotropical.16.e56186" },
-    { id: 26, title: "Climate and large-sized trees drive above-ground biomass in subtropical forests", journal: "Forest Ecology and Management", year: "2021", link: "https://doi.org/10.1016/j.foreco.2021.119126" },
-    { id: 27, title: "Taking the pulse of Earth's tropical forests using networks of highly distributed plots", journal: "Biological Conservation", year: "2021", link: "https://doi.org/10.1016/j.biocon.2020.108849" },
-    { id: 28, title: "Plant functional traits explain species abundance patterns among saplings and adult trees", journal: "Austral Ecology", year: "2021", link: "https://doi.org/10.1111/aec.13044" },
-    { id: 29, title: "Eukaryotic Communities in Bromeliad Phytotelmata: Altitudinal Differences", journal: "Diversity", year: "2020", link: "https://doi.org/10.3390/d12090326" },
-    { id: 30, title: "Complex Microbial Community Composition in Bromeliad Tank Waters Revealed by eDNA Metabarcoding", journal: "J. Eukaryot. Microbiol.", year: "2020", link: "https://doi.org/10.1111/jeu.12814" },
-    { id: 31, title: "Biodiversity and ecosystem functioning in the Brazilian Atlantic Forest", journal: "Nature Communications", year: "2020", link: "https://doi.org/10.1038/s41467-020-18231-1" },
-    { id: 32, title: "Long-term population trends of forest birds in the Brazilian Atlantic Forest", journal: "Biological Conservation", year: "2019", link: "https://doi.org/10.1016/j.biocon.2019.03.023" },
-    { id: 33, title: "Forest restoration and the recovery of plant-pollinator networks", journal: "Journal of Applied Ecology", year: "2019", link: "https://doi.org/10.1111/1365-2664.13327" },
-    { id: 34, title: "Functional diversity and the resilience of tropical forests", journal: "Ecology Letters", year: "2018", link: "https://doi.org/10.1111/ele.13132" },
-    { id: 35, title: "The role of secondary forests in biodiversity conservation", journal: "Science", year: "2018", link: "https://doi.org/10.1126/science.aaj2532" },
-    { id: 36, title: "Plant-frugivore networks across the Atlantic Forest", journal: "Nature", year: "2017", link: "https://doi.org/10.1038/nature23644" },
-    { id: 37, title: "Climate change and the future of the Atlantic Forest", journal: "Global Change Biology", year: "2017", link: "https://doi.org/10.1111/gcb.13655" },
-    { id: 38, title: "Mammal community response to forest fragmentation", journal: "PLOS ONE", year: "2016", link: "https://doi.org/10.1371/journal.pone.0151805" },
-    { id: 39, title: "The impacts of hunting on forest biodiversity", journal: "Science Advances", year: "2016", link: "https://doi.org/10.1126/sciadv.1501136" },
-    { id: 40, title: "Landscape-scale forest restoration in the Atlantic Forest", journal: "Restoration Ecology", year: "2015", link: "https://doi.org/10.1111/rec.12165" },
+  const articles: { title: ReactNode, link: string }[] = [
+    { title: <>Huber CSR, Köche Huber LK, Utz LRP. (in press). Soil microbial community composition in two distinct preserved habitats. <strong>Metabarcoding and Metagenomics</strong> 2026.</>, link: "#" },
+    { title: <>González JB, da Silveira PA, de Oliveira EC, Lettrari MA, Valgas AAN, Oliveira GT. 2026. Impact of 2,4-D alone or combined with glyphosate on markers of metabolism and oxidative balance of Parastacus promatensis. <strong>Ecotoxicology</strong> 35:16.</>, link: "https://doi.org/10.1007/s10646-025-02991-9" },
+    { title: <>Santana AV, Aguiar CA, Schüssler G, Oliveira JR, Tirelli FP, Eizirik E. 2026. Multiyear assessment of crab-eating fox (<em>Cerdocyon thous</em>) activity patterns in the Brazilian Atlantic Forest. <strong>Journal of Mammalogy</strong> 107:240–251.</>, link: "https://doi.org/10.1093/jmammal/gyaf045" },
+    { title: <>Aguirre-Gutiérrez J, et al. 2025. Canopy functional trait variation across Earth’s tropical forests. <strong>Nature</strong> 641:129–136.</>, link: "https://doi.org/10.1038/s41586-025-08663-2" },
+    { title: <>Aguirre-Gutiérrez J, et al. 2025. Tropical forests in the Americas are changing too slowly to track climate change. <strong>Science</strong> 387:eadl5414.</>, link: "https://doi.org/10.1126/science.adl5414" },
+    { title: <>Bordin KM, Cianciaruso MV, Duarte LS, Bergamin RS, Klipel J, Picolotto RC, Morales DC, Higuchi P, Silva AC, Capellesso ES, Marques MCM, Müller SC. 2025. Tall stature and small leaves: ecological strategies that enhance tree growth across the subtropical Brazilian Atlantic Forest. <strong>Oikos</strong> 2025:e11235.</>, link: "https://doi.org/10.1002/oik.11235" },
+    { title: <>de Souza GT, Caberlon CA, Moser CF, Oliveira GT, Dalmolin DA, Santos RC, Tozetti AM. 2025. Functional responses of tadpoles exposed to different concentrations of Roundup® herbicide. <strong>Ecotoxicology</strong> 34:893–906.</>, link: "https://doi.org/10.1007/s10646-025-02882-z" },
+    { title: <>Freitag Kramer JM, Bordin KM, Bergamin RS, Klipel J, Picolotto RC, Zanini KJ, Zwiener VP, Müller, SC. 2025. Temporal changes in taxonomic and functional alpha and beta diversity across tree communities in subtropical Atlantic forests. <strong>Oikos</strong> 2025:e10961.</>, link: "https://doi.org/10.1111/oik.10961" },
+    { title: <>Fontana CS, Jacoboski LI, Rosoni JRR, da Silva JL, Bernardi FAP, Malmoria PE, Beier C, Hartz SM. 2025. Bird Community Structure Changes as Araucaria Forest Cover Increases in the Highlands of Southeastern Brazil. <strong>Birds</strong> 6(3):37.</>, link: "https://doi.org/10.3390/birds6030037" },
+    { title: <>Hentges CR, Schuck LK, Caberlon CA, Tozetti AM, Oliveira GT. 2025. Impact of environmentally relevant concentrations of glyphosate on <em>Boana faber</em> tadpoles exposed in the laboratory: Morphological and functional markers. <strong>Environmental Toxicology and Pharmacology</strong> 114:104643.</>, link: "https://doi.org/10.1016/j.etap.2025.104643" },
+    { title: <>Huber L, Malfatti E, Huber CSR, Taylor JD, Utz LRP. 2025. Is the Composition of Communities in Bromeliad Water and Adjacent Soil Similar? <strong>J. Eukaryotic Microbiology</strong> 72: e70009.</>, link: "https://doi.org/10.1111/jeu.70009" },
+    { title: <>International Tree Mortality Network. 2025. Towards a global understanding of tree mortality. <strong>New Phytologist</strong> 245:2377-2392.</>, link: "https://doi.org/10.1111/nph.20407" },
+    { title: <>Sullivan MJP, et al. 2025. Variation in wood density across South American tropical forests. <strong>Nature Communications</strong> 16:2351.</>, link: "https://doi.org/10.1038/s41467-025-56175-4" },
+    { title: <>Bergamin RS, Bastazini VAG, Esquivel-Muelbert A, Bordin KM, Klipel J, Debastiani VJ, Vibrans AC, Loyola R, Müller SC. 2024. Elevational shifts in tree community composition in the Brazilian Atlantic Forest related to climate change. <strong>Journal of Vegetation Science</strong> 35:e13289.</>, link: "https://doi.org/10.1111/jvs.13289" },
+    { title: <>Bialic-Murphy L, et al. 2024. The pace of life for forest trees. <strong>Science</strong> 386:92-98.</>, link: "https://doi.org/10.1126/science.adk9616" },
+    { title: <>Guimaraes AF, et al. 2024. Disentangling the veil line for Brazilian biodiversity: An overview from two long-term research programs reveals huge gaps in ecological data reporting. <strong>Science of the Total Environment</strong> 950:174880.</>, link: "https://doi.org/10.1016/j.scitotenv.2024.174880" },
+    { title: <>Klipel J, Bergamin RS, Bordin KM, Picolotto RC, Müller SC, de Bello F. 2024. The effect of neighbor species' phylogenetic and trait difference on tree growth in subtropical forests. <strong>Journal of Vegetation Science</strong> 35: e13296.</>, link: "https://doi.org/10.1111/jvs.13296" },
+    { title: <>Klipel J, da Cunha Morales D, Bordin KM Picolotto RC, Bergamin RS, Müller SC. 2024. The role of tree crown on the performance of trees at individual and community levels: whole-phenotypic context matters. <strong>Plant Ecology</strong> 225: 907–918.</>, link: "https://doi.org/10.1007/s11258-024-01442-5" },
+    { title: <>Schuck LK, Neely WJ, Buttimer SM, Moser CF, Barth PC, Liskoski PE, Caberlon CA, Valiati VH, Tozetti AM, Becker CG. 2024. Effects of grassland controlled burning on symbiotic skin microbes in Neotropical amphibians. <strong>Scientific Reports</strong> 14: 959.</>, link: "https://doi.org/10.1038/s41598-023-50394-9" },
+    { title: <>Bordin KM, Esquivel-Muelbert A, Klipel J, Picolotto RC, Bergamin RS, da Silva AC, Higuchi P, Capellesso ES, Marques MCM, Souza AF, Müller SC. 2023. No relationship between biodiversity and forest carbon sink across the subtropical Brazilian Atlantic Forest. <strong>Perspectives in Ecology and Conservation</strong> 21:112–120.</>, link: "https://doi.org/10.1016/j.pecon.2023.02.003" },
+    { title: <>Klipel J, Bergamin RS, Cianciaruso MV, da Silva AC, Jurinitz CF, Jarenkow JA, Bordin KM, Molz M, Higuchi P, Picolotto RC, Debastiani VJ, Müller SC. 2023. How do distinct facets of tree diversity and community assembly respond to environmental variables in the subtropical Atlantic Forest? <strong>Ecology and Evolution</strong> 13:e10321.</>, link: "https://doi.org/10.1002/ece3.10321" },
+    { title: <>Klipel J, Muller SC, Gliesch M, Duarte L, Carlucci MB, Bergamin RS. 2023. Variability in leaf traits reveals contrasting strategies between forest and grassland woody communities across southern Brazil. <strong>Flora</strong> 305:152340.</>, link: "https://doi.org/10.1016/j.flora.2023.152340" },
+    { title: <>Lima, R.A. F.; Phillips, O.L.; Duque, A.; Tello, J. S.; Davies, S.; Oliveira, A. A.; Müller, S.C.; Coronado, E.H.; Torre, E.V.; Cuni-Sanchez, A. ; Baker, T.R.; Ryan, C.; Malizia, A.; Lewis, S.L.; Steege, H. T. ; Ferreira, J.; Marimon, B.; Luu, H. T. ; Imani, G. ; Arroyo, L.; Blundo, C.; Kenfack, D. ; Sainge, M. N. ; Sonké, B.; Vasquez, R. 2022. Making Forest Data Fair and Open. <strong>Nature Ecology & Evolution</strong> 6:656–65.</>, link: "https://doi.org/10.1038/s41559-022-01738-7" },
+    { title: <>Malfatti E, Couto ECG, Ferreira PMA, Utz LRP. 2022. “Hitchhicking with invertebrates”: two reports of epibiosis by peritrich ciliates on ostracods and hydrachnid mites in tanks of epiphytic bromeliads from south Brazil. <strong>An. Acad. Bras. Ciênc.</strong> 94.</>, link: "https://doi.org/10.1590/0001-3765202220210894" },
+    { title: <>Antonetti DA, Malfatti E, Utz LRP. 2021. Influence of environmental and morphological parameters on the microfauna community present in phytotelmata of a bromeliad in a fragment of Atlantic Forest, southern Brazil. <strong>Neotropical Biology and Conservation</strong> 16:59-70.</>, link: "https://doi.org/10.3897/neotropical.16.e56186" },
+    { title: <>Bordin MB, Esquivel-Muelbert A, Bergamin RS, Klipel J, Picolotto RC, Frangipani MA, Zanini K, Cianciaruso MV, Jarenkow JA, Jurinitz CF, Molz M, Higuchi P, Silva AC, Müller SC. 2021. Climate and large-sized trees, but not diversity, drive above-ground biomass in subtropical forests. <strong>Forest Ecology and Management</strong> 490:119126.</>, link: "https://doi.org/10.1016/j.foreco.2021.119126" },
+    { title: <>ForestPlots.net et al. 2021. Taking the pulse of Earth's tropical forests using networks of highly distributed plots. <strong>Biological Conservation</strong>:108849.</>, link: "https://doi.org/10.1016/j.biocon.2020.108849" },
+    { title: <>Klipel J, Bergamin RS, Seger GDS, Carlucci MB, Müller SC. 2021. Plant functional traits explain species abundance patterns and strategies shifts among saplings and adult trees in Araucaria forests. <strong>Austral Ecology</strong> 46:1084-1096.</>, link: "https://doi.org/10.1111/aec.13044" },
+    { title: <>Malfatti E, Ferreira PMA, Utz LRP. 2020. Eukaryotic Communities in Bromeliad Phytotelmata: How Do They Respond to Altitudinal Differences? <strong>Diversity</strong> 12: 326.</>, link: "https://doi.org/10.3390/d12090326" },
+    { title: <>Simão TLL, Utz LRP, Dias R, Giongo A, Triplett EW, Eizirik E. 2020. Remarkably Complex Microbial Community Composition in Bromeliad Tank Waters Revealed by eDNA Metabarcoding. <strong>J. Eukaryot. Microbiol.</strong> 67: 593-607.</>, link: "https://doi.org/10.1111/jeu.12814" },
   ];
 
-  const theses = [
-    { id: "t1", title: "Monitoramento da biodiversidade na RPPN Pró-Mata: Padrões e Processos de Longa Duração", author: "Equipe PELD PROM", year: "2024", type: "Projeto de Monitoramento" },
-    { id: "t2", title: "Ecologia e conservação de mamíferos carnívoros no mosaico de habitats da Serra Gaúcha", author: "A. Silva", year: "2023", type: "Tese de Doutorado" },
-    { id: "t3", title: "Dinâmica de comunidades de artrópodes bioindicadores em áreas de transição", author: "M. Oliveira", year: "2022", type: "Dissertação de Mestrado" },
-    { id: "t4", title: "Padrões de atividade e uso do habitat por felinos neotropicais via armadilhas fotográficas", author: "R. Santos", year: "2023", type: "Dissertação de Mestrado" },
-    { id: "t5", title: "Uso de DNA ambiental para monitoramento de vertebrados terrestres em micro-bacias", author: "L. Ferreira", year: "2024", type: "Tese de Doutorado" },
-    { id: "t6", title: "Impacto da fragmentação florestal na diversidade funcional de aves", author: "J. Souza", year: "2021", type: "Tese de Doutorado" },
-    { id: "t7", title: "Efeito do fogo controlado em comunidades de anfíbios de altitude", author: "C. Lima", year: "2022", type: "Dissertação de Mestrado" },
-    { id: "t8", title: "Sucessão vegetal e sequestro de carbono em áreas de restauração", author: "F. Rocha", year: "2023", type: "Dissertação de Mestrado" },
-    { id: "t9", title: "Diversidade de artrópodes em gradientes de altitude na RPPN Pró-Mata", author: "G. Mendes", year: "2024", type: "Dissertação de Mestrado" },
-    { id: "t10", title: "Ecologia trófica de pequenos mamíferos em áreas de Campo e Floresta", author: "H. Bauer", year: "2023", type: "Tese de Doutorado" },
-  ];
 
   const subgroups = [
     { 
@@ -883,160 +919,36 @@ const ScientificPage = ({ onBack }: { onBack: () => void }) => {
         </button>
 
         <SectionHeader 
-          title={<span className="notranslate" translate="no">Dados e Publicações</span>} 
-          subtitle="Resultados consolidados, artigos científicos e teses publicadas no âmbito do projeto." 
+          title={<span className="notranslate" translate="no">Artigos científicos publicados</span>} 
+          subtitle="Abaixo você encontra a lista completa de publicações científicas resultantes do projeto." 
         />
-
-        {/* Gráficos de Subgrupos */}
-        <div className="mb-24">
-          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
-            <Layout className="text-emerald-600" size={24} /> Riqueza de Espécies por Grupo
-          </h3>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col gap-3">
-              {subgroups.map((group) => (
-                <button
-                  key={group.id}
-                  onClick={() => setActiveSubgroup(group.id)}
-                  className={`p-4 rounded-2xl flex items-center gap-4 transition-all text-left ${
-                    activeSubgroup === group.id 
-                      ? "bg-emerald-600 text-white shadow-lg scale-[1.02]" 
-                      : "bg-stone-50 text-stone-600 hover:bg-stone-100"
-                  }`}
-                >
-                  <group.icon size={20} />
-                  <span className="font-bold">{group.name}</span>
-                </button>
-              ))}
-            </div>
-            
-            <div className="lg:col-span-3">
-              <div className="aspect-[16/9] bg-stone-50 rounded-[40px] border border-stone-200 overflow-hidden flex flex-col p-8 relative">
-                <div className="mb-6 flex justify-between items-center">
-                  <div>
-                    <h4 className="text-2xl font-serif font-bold text-stone-800">Riqueza por {activeSubgroup === "artropodes" ? "Ordem" : "Família"}</h4>
-                    <p className="text-stone-500">Número de espécies identificadas em {subgroups.find(g => g.id === activeSubgroup)?.name}</p>
-                  </div>
-                  <a 
-                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
-                    target="_blank" 
-                    rel="noopener"
-                    className="p-3 bg-white rounded-full text-stone-400 hover:text-emerald-600 hover:shadow-md transition-all"
-                    title="Ver Gráfico Original"
-                  >
-                    <Download size={20} />
-                  </a>
-                </div>
-                
-                <div className="flex-1 w-full min-h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={activeData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                      <XAxis 
-                        dataKey="name" 
-                        angle={-45} 
-                        textAnchor="end" 
-                        interval={0} 
-                        height={60} 
-                        stroke="#6b7280"
-                        fontSize={12}
-                        fontWeight={500}
-                      />
-                      <YAxis stroke="#6b7280" fontSize={12} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          borderRadius: '16px', 
-                          border: 'none', 
-                          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-                          padding: '12px 16px'
-                        }}
-                        cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                      />
-                      <Bar 
-                        dataKey="value" 
-                        radius={[8, 8, 0, 0]} 
-                        animationDuration={1500}
-                      >
-                        {activeData.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={index === 0 ? "#10b981" : activeColor} 
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div className="mt-6 flex justify-center">
-                   <a 
-                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
-                    target="_blank" 
-                    rel="noopener"
-                    className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:gap-3 transition-all text-sm"
-                  >
-                    Acessar Repositório de Dados Completos <ExternalLink size={16} />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Lista de Artigos */}
         <div className="mb-24">
-          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
-            <FlaskConical className="text-emerald-600" size={24} /> Artigos Científicos Publicados
-          </h3>
-          <div className="grid grid-cols-1 gap-4">
-            {articles.map((article) => (
-              <div key={article.id} className="p-6 bg-white rounded-2xl border border-stone-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all group">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{article.year}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">{article.journal}</span>
+          <div className="grid grid-cols-1 gap-6">
+            {articles.map((article, idx) => (
+              <div key={idx} className="p-8 bg-stone-50 rounded-3xl border border-stone-200 hover:border-emerald-300 transition-all group shadow-sm">
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-4 items-start">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-700 font-bold text-sm">
+                      {idx + 1}
+                    </div>
+                    <p className="text-stone-800 leading-relaxed font-serif text-lg flex-1">
+                      {article.title}
+                    </p>
                   </div>
-                  <h4 className="text-lg font-serif font-bold text-stone-900 group-hover:text-emerald-700 transition-colors">{article.title}</h4>
-                </div>
-                <a 
-                  href={article.link} 
-                  target="_blank" 
-                  rel="noopener"
-                  className="bg-stone-50 border border-stone-100 p-3 rounded-xl text-stone-400 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm shrink-0"
-                >
-                  <ExternalLink size={18} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Lista de Teses */}
-        <div>
-          <h3 className="text-2xl font-serif font-bold text-stone-900 mb-8 flex items-center gap-3">
-            <BookOpen className="text-emerald-600" size={24} /> Teses e Dissertações
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {theses.map((thesis) => (
-              <div key={thesis.id} className="p-8 bg-stone-50 rounded-3xl border border-stone-200 flex flex-col justify-between gap-6 hover:border-emerald-300 transition-colors group">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="px-3 py-1 bg-white border border-stone-200 rounded-full text-[10px] font-bold uppercase tracking-widest text-stone-500">{thesis.year}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600">{thesis.type}</span>
-                  </div>
-                  <h4 className="text-xl font-serif font-bold text-stone-900 group-hover:text-emerald-700 transition-colors mb-3 leading-tight">{thesis.title}</h4>
-                  <p className="text-stone-600 text-sm italic">Autor(a): <span className="font-medium">{thesis.author}</span></p>
-                </div>
-                <div className="pt-4 border-t border-stone-200 flex justify-end">
-                   <a 
-                    href="https://drive.google.com/drive/folders/1H9KwaiEhj4lZbPhZkHpvi2A8KzzVJfaW" 
-                    target="_blank" 
-                    rel="noopener"
-                    className="text-emerald-600 font-bold text-sm flex items-center gap-2 hover:translate-x-1 transition-transform"
-                   >
-                     Ver Arquivo <FileText size={16} />
-                   </a>
+                  {article.link !== "#" && (
+                    <div className="pl-12">
+                      <a 
+                        href={article.link} 
+                        target="_blank" 
+                        rel="noopener"
+                        className="text-emerald-600 font-bold flex items-center gap-2 hover:text-emerald-700 transition-colors text-sm break-all"
+                      >
+                        <ExternalLink size={16} /> {article.link}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
